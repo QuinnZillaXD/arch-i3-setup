@@ -1,0 +1,28 @@
+#!/bin/bash
+set -e
+
+echo "==> Updating system..."
+sudo pacman -Syu --noconfirm
+
+echo "==> Installing essential packages..."
+sudo pacman -S --noconfirm i3 xorg xterm git python feh screenfetch unzip wget base-devel
+
+echo "==> Installing Chicago95 theme..."
+mkdir -p ~/.themes ~/.icons
+cd /tmp
+git clone https://github.com/grassmunk/Chicago95.git
+cd Chicago95
+./install.sh
+
+echo "==> Enabling i3 as default window manager..."
+echo 'exec i3' > ~/.xinitrc
+
+echo "==> Setting background image (optional)..."
+mkdir -p ~/Pictures
+wget -O ~/Pictures/win95-wallpaper.jpg https://wallpaperaccess.com/full/3028550.jpg
+feh --bg-scale ~/Pictures/win95-wallpaper.jpg
+
+echo "==> Adding screenfetch to bashrc..."
+echo "screenfetch" >> ~/.bashrc
+
+echo "==> Done. Type 'startx' to launch i3."
